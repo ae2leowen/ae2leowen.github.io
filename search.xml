@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+  
+    
+    <entry>
+      <title></title>
+      <link href="/2024/09/26/setup_website/"/>
+      <url>/2024/09/26/setup_website/</url>
+      
+        <content type="html"><![CDATA[<h1 id="记录基于github搭建网站"><a href="#记录基于github搭建网站" class="headerlink" title="记录基于github搭建网站"></a>记录基于github搭建网站</h1><p>简单记录基于github搭建个人博客站，万一后面忘了呢！！！</p><h2 id="创建"><a href="#创建" class="headerlink" title="创建&lt;博客仓库&gt;"></a>创建&lt;博客仓库&gt;</h2><ul><li><p>新建github仓库：</p><blockquote><p>仓库名为<username>.github.io，例如github的username是zhangsan，则仓库名为zhangsan.github.io, 可以选择创建时直接初始化，或者clone到本地自己初始化，和平常仓库创建无差</p></blockquote></li><li><p>设置pages</p><blockquote><p>github页面找到刚创建的仓库，点击最右侧的settings，并在settings界面左侧列找到pages点击，选择一个分支(如果只是初始化过那就只有一个main分支)并点击save，网页就发布成功了</p></blockquote></li><li><p>下载代码</p><blockquote><p>正常下载刚刚创建的仓库代码到本地<br>git clone xxx.git</p></blockquote></li></ul><h2 id="创建-1"><a href="#创建-1" class="headerlink" title="创建&lt;框架仓库&gt;"></a>创建&lt;框架仓库&gt;</h2><ul><li>安装hexo<ul><li>安装Node.js -&gt; <a href="https://nodejs.org/en/">官网</a></li><li>安装hexo(也可以用其他的) -&gt; <code>npm install -g hexo</code></li><li>关于hexo<a href="https://hexo.io/zh-cn/">官网</a></li></ul></li><li>初始化仓库<ul><li>用你最喜欢的方式创建一个新仓库并下载到本地</li><li>初始化框架 -&gt; <code>hexo init</code>等待完成</li></ul></li></ul><h2 id="发布内容"><a href="#发布内容" class="headerlink" title="发布内容"></a>发布内容</h2><ul><li><p>写博客</p><blockquote><p>在<strong>框架仓库</strong>中初始化完成后，会下载多个文件夹，在source&#x2F;_posts中新增md文件，一个即为一篇文章</p></blockquote></li><li><p>生成源码 </p><blockquote><p><code>hexo generate</code> 完成后会生成<code>public</code>文件夹，里面的所有文件即为框架生成的网站源码</p></blockquote></li><li><p>发布网站</p><blockquote><ul><li>拷贝<code>public</code>中所有内容到 <strong>博客仓库</strong> 源码中</li><li>提交到 <strong>博客仓库</strong> 中对应分支(即设置pages中选择的分支)即可</li></ul></blockquote></li></ul><h2 id="美化网站"><a href="#美化网站" class="headerlink" title="美化网站"></a>美化网站</h2><blockquote><p>网站找个自己喜欢的hexo框架适用的任意模板</p></blockquote><h3 id="Matery"><a href="#Matery" class="headerlink" title="Matery"></a><a href="https://github.com/blinkfox/hexo-theme-matery">Matery</a></h3><ul><li>下载模板<blockquote><ul><li>进入<strong>框架仓库</strong>，找到themes文件夹 <code>cd themes</code></li><li>下载源码 <code>git clone git@github.com:blinkfox/hexo-theme-matery.git --depth=1</code></li><li>参照官网文件修改自己的内容即可</li></ul></blockquote></li></ul>]]></content>
+      
+      
+      
+    </entry>
+    
+    
+  
+  
+</search>
