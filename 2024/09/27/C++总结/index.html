@@ -348,8 +348,14 @@
 <p>C面向过程，C++面向对象&#x2F;面向过程</p>
 </blockquote>
 <ul>
-<li><h4 id="面向过程：核心是数据和操作数据"><a href="#面向过程：核心是数据和操作数据" class="headerlink" title="面向过程：核心是数据和操作数据"></a>面向过程：核心是数据和操作数据</h4></li>
-<li><h4 id="面向对象：封装、继承、多态"><a href="#面向对象：封装、继承、多态" class="headerlink" title="面向对象：封装、继承、多态"></a>面向对象：封装、继承、多态</h4><ul>
+<li><h4 id="面向过程"><a href="#面向过程" class="headerlink" title="面向过程"></a>面向过程</h4><blockquote>
+<p>核心是数据和操作数据</p>
+</blockquote>
+</li>
+<li><h4 id="面向对象"><a href="#面向对象" class="headerlink" title="面向对象"></a>面向对象</h4><blockquote>
+<p>封装、继承、多态</p>
+</blockquote>
+<ul>
 <li><h5 id="封装：分离定义和实现；隐藏实现细节-代码保护，避免使用者数据破坏类内部数据"><a href="#封装：分离定义和实现；隐藏实现细节-代码保护，避免使用者数据破坏类内部数据" class="headerlink" title="封装：分离定义和实现；隐藏实现细节; 代码保护，避免使用者数据破坏类内部数据"></a>封装：分离定义和实现；隐藏实现细节; 代码保护，避免使用者数据破坏类内部数据</h5><ul>
 <li><h6 id="友元：可以访问类的私有成员，但不属于类"><a href="#友元：可以访问类的私有成员，但不属于类" class="headerlink" title="友元：可以访问类的私有成员，但不属于类"></a>友元：可以访问类的私有成员，但不属于类</h6><ul>
 <li>会破坏封装性，友元的声明需要在类内部(在内部任意位置都可以)，</li>
@@ -675,8 +681,8 @@ void ABC::print(int a) &#123;
             tocSelector: '#toc-content',
             contentSelector: '#articleContent',
             headingsOffset: -($(window).height() * 0.4 - 45),
-            collapseDepth: Number('0'),
-            headingSelector: 'h2, h3, h4'
+            collapseDepth: Number('2'),
+            headingSelector: 'h2, h3, h4, h5, h6'
         });
 
         // Set scroll toc fixed.
