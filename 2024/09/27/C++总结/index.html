@@ -356,8 +356,18 @@
 <p>封装、继承、多态</p>
 </blockquote>
 <ul>
-<li><h5 id="封装：分离定义和实现；隐藏实现细节-代码保护，避免使用者数据破坏类内部数据"><a href="#封装：分离定义和实现；隐藏实现细节-代码保护，避免使用者数据破坏类内部数据" class="headerlink" title="封装：分离定义和实现；隐藏实现细节; 代码保护，避免使用者数据破坏类内部数据"></a>封装：分离定义和实现；隐藏实现细节; 代码保护，避免使用者数据破坏类内部数据</h5><ul>
-<li><h6 id="友元：可以访问类的私有成员，但不属于类"><a href="#友元：可以访问类的私有成员，但不属于类" class="headerlink" title="友元：可以访问类的私有成员，但不属于类"></a>友元：可以访问类的私有成员，但不属于类</h6><ul>
+<li><h5 id="封装"><a href="#封装" class="headerlink" title="封装"></a>封装</h5><blockquote>
+<p>分离定义和实现；隐藏实现细节; 代码保护，避免使用者数据破坏类内部数据</p>
+</blockquote>
+<ul>
+<li><h6 id="友元"><a href="#友元" class="headerlink" title="友元"></a>友元</h6><blockquote>
+<p>友元是一种特殊的类成员，可以访问类的私有和保护成员，但不允许修改类成员，可以访问类的所有成员</p>
+</blockquote>
+<ul>
+<li>友元声明：在类声明中使用关键字friend，声明一个类为友元类，可以访问类的私有和保护成员，但不允许修改类成员</li>
+<li>友元函数：可以访问类的私有和保护成员，但不允许修改类成员，可以访问类的所有成员</li>
+<li>友元类：可以访问类的所有成员，但不允许修改类成员</li>
+<li>可以访问类的私有成员，但不属于类</li>
 <li>会破坏封装性，友元的声明需要在类内部(在内部任意位置都可以)，</li>
 <li>友元函数无传递性</li>
 <li><strong>友元声明不是函数声明</strong>(即需要类外单独声明函数，即使在声明时定义了该友元函数，当前类调用友元函数也必须在友元函数的声明之后)  <pre class="line-numbers language-c++" data-language="c++"><code class="language-c++">struct ABC &#123;
@@ -380,7 +390,10 @@ void ABC::print(int a) &#123;
 </li>
 </ul>
 </li>
-<li><h5 id="继承-表达is-a关系"><a href="#继承-表达is-a关系" class="headerlink" title="继承: 表达is-a关系"></a>继承: 表达<code>is-a</code>关系</h5><ul>
+<li><h5 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h5><blockquote>
+<p>表达<code>is-a</code>关系</p>
+</blockquote>
+<ul>
 <li>好处：代码重用，提高代码的可维护性；对类扩展</li>
 <li>友元关系不能被继承，其具有单向性、无传递性</li>
 <li>静态成员不能被继承，但子类可以直接使用父类的静态成员函数，但无法重写</li>
@@ -391,13 +404,19 @@ void ABC::print(int a) &#123;
 <li>缺点是多继承的复杂性，容易造成类爆炸，且父类的变动会影响所有子孙类</li>
 </ul>
 </li>
-<li><h5 id="多态：同一对象在不同条件下表现出不同的特性"><a href="#多态：同一对象在不同条件下表现出不同的特性" class="headerlink" title="多态：同一对象在不同条件下表现出不同的特性"></a>多态：同一对象在不同条件下表现出不同的特性</h5><ul>
-<li><h6 id="静态多态："><a href="#静态多态：" class="headerlink" title="静态多态："></a>静态多态：</h6><ul>
+<li><h5 id="多态"><a href="#多态" class="headerlink" title="多态"></a>多态</h5><blockquote>
+<p>同一对象在不同条件下表现出不同的特性</p>
+</blockquote>
+<ul>
+<li><h6 id="静态多态"><a href="#静态多态" class="headerlink" title="静态多态"></a>静态多态</h6><ul>
 <li>通过函数重载实现，根据参数类型调用不同的函数</li>
 <li>通过模板实现，模板分为类模板和函数模板</li>
 </ul>
 </li>
-<li><h6 id="动态多态：通过虚函数实现，根据对象类型调用不同的函数"><a href="#动态多态：通过虚函数实现，根据对象类型调用不同的函数" class="headerlink" title="动态多态：通过虚函数实现，根据对象类型调用不同的函数"></a>动态多态：通过虚函数实现，根据对象类型调用不同的函数</h6><ul>
+<li><h6 id="动态多态"><a href="#动态多态" class="headerlink" title="动态多态"></a>动态多态</h6><blockquote>
+<p>通过虚函数实现，根据对象类型调用不同的函数</p>
+</blockquote>
+<ul>
 <li>子类继承父类虚函数表并进行虚函数的替换(覆盖)</li>
 <li>需要使用基类的指针&#x2F;引用进行调用</li>
 <li>虚函数：即声明时加入virtual标识的函数</li>
