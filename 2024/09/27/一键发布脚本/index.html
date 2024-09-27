@@ -356,6 +356,7 @@
 <span class="token builtin class-name">echo</span> <span class="token string">"开始备份源文件"</span>
 <span class="token builtin class-name">cd</span> <span class="token variable">$blog_prj</span> 
 <span class="token assign-left variable">date_tmp</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y/%m/%d-%H:%M:%S<span class="token variable">)</span></span>
+<span class="token function">git</span> stash <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> pull origin master <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> stash pop
 <span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> cm <span class="token string">"update <span class="token variable">$date_tmp</span>"</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push origin master
 <span class="token builtin class-name">cd</span> <span class="token variable">$root</span>
 
@@ -375,7 +376,7 @@
 <span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> cm <span class="token string">"update <span class="token variable">$date_tmp</span>"</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push origin main
 <span class="token builtin class-name">cd</span> <span class="token variable">$root</span>
 
-<span class="token builtin class-name">echo</span> <span class="token string">"发布完成，前往 https://ae2leowen.github.io 查看"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token builtin class-name">echo</span> <span class="token string">"发布完成，前往 https://ae2leowen.github.io 查看"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>
