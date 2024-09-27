@@ -108,6 +108,35 @@
     
     
     <entry>
+      <title>Terminator使用记录</title>
+      <link href="/2024/09/27/Terminator%E9%85%8D%E7%BD%AE/"/>
+      <url>/2024/09/27/Terminator%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Terminator使用记录"><a href="#Terminator使用记录" class="headerlink" title="Terminator使用记录"></a>Terminator使用记录</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote><p>sudo apt-get install terminator</p></blockquote><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><blockquote><p>~&#x2F;.config&#x2F;terminator&#x2F;config</p></blockquote><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>global_config<span class="token punctuation">]</span>handle_size <span class="token operator">=</span> <span class="token parameter variable">-3</span>title_transmit_fg_color <span class="token operator">=</span> <span class="token string">"#000000"</span>title_transmit_bg_color <span class="token operator">=</span> <span class="token string">"#3e3838"</span>inactive_color_offset <span class="token operator">=</span> <span class="token number">1.0</span>enabled_plugins <span class="token operator">=</span> CustomCommandsMenu, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandlersuppress_multiple_term_dialog <span class="token operator">=</span> True<span class="token punctuation">[</span>keybindings<span class="token punctuation">]</span><span class="token punctuation">[</span>layouts<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">[</span>default<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">[</span>child1<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span>parent <span class="token operator">=</span> window0<span class="token builtin class-name">type</span> <span class="token operator">=</span> Terminal<span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token punctuation">[</span>window0<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">]</span>parent <span class="token operator">=</span> <span class="token string">""</span><span class="token builtin class-name">type</span> <span class="token operator">=</span> Window<span class="token punctuation">[</span>plugins<span class="token punctuation">]</span><span class="token punctuation">[</span>profiles<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">[</span>default<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token punctuation">[</span>jkyang<span class="token punctuation">]</span><span class="token punctuation">]</span>audible_bell <span class="token operator">=</span> Truebackground_color <span class="token operator">=</span> <span class="token string">"#002b36"</span>background_darkness <span class="token operator">=</span> <span class="token number">0.74</span>background_image <span class="token operator">=</span> Nonebackground_type <span class="token operator">=</span> transparentcursor_color <span class="token operator">=</span> <span class="token string">"#92f7ea"</span>custom_command <span class="token operator">=</span> <span class="token function">sudo</span> <span class="token parameter variable">-i</span>font <span class="token operator">=</span> Ubuntu Mono <span class="token number">13</span>foreground_color <span class="token operator">=</span> <span class="token string">"#9af792"</span>palette <span class="token operator">=</span> <span class="token string">"#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3"</span>scroll_background <span class="token operator">=</span> Falsescrollback_lines <span class="token operator">=</span> <span class="token number">3000</span>scrollbar_position <span class="token operator">=</span> hiddenurgent_bell <span class="token operator">=</span> Trueuse_custom_command <span class="token operator">=</span> Trueuse_system_font <span class="token operator">=</span> Falsevisible_bell <span class="token operator">=</span> True<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><!--stackedit_data:eyJoaXN0b3J5IjpbLTEzMjEzMzQxMjhdfQ==-->]]></content>
+      
+      
+      <categories>
+          
+          <category> Tools </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> terminal </tag>
+            
+            <tag> ssh </tag>
+            
+            <tag> ubuntu </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>Ubuntu多版本管理</title>
       <link href="/2024/09/27/ubuntu%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/"/>
       <url>/2024/09/27/ubuntu%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/</url>
