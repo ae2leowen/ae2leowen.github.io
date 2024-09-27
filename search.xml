@@ -4,6 +4,229 @@
   
     
     <entry>
+      <title>FP16和FP32互转</title>
+      <link href="/2024/09/27/FP16%E5%92%8CFP32%E4%BA%92%E8%BD%AC/"/>
+      <url>/2024/09/27/FP16%E5%92%8CFP32%E4%BA%92%E8%BD%AC/</url>
+      
+        <content type="html"><![CDATA[<h2 id="FP16和FP32互转"><a href="#FP16和FP32互转" class="headerlink" title="FP16和FP32互转"></a>FP16和FP32互转</h2><ul><li>C++版本<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">short</span> <span class="type">uint16_t</span>;<span class="comment">//占用2个字节</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="type">unsigned</span> <span class="type">int</span> <span class="type">uint32_t</span>; <span class="comment">//占用4个字节</span></span><br><span class="line"><span class="function"><span class="type">uint32_t</span> <span class="title">as_uint</span><span class="params">(<span class="type">const</span> <span class="type">float</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> *(<span class="type">uint32_t</span>*)&amp;x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">as_float</span><span class="params">(<span class="type">const</span> <span class="type">uint32_t</span> x)</span> </span>&#123;</span><br><span class="line"><span class="keyword">return</span> *(<span class="type">float</span>*)&amp;x;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">float</span> <span class="title">half_to_float</span><span class="params">(<span class="type">const</span> <span class="type">uint16_t</span> x)</span> </span>&#123; <span class="comment">// IEEE-754 16-bit floating-point format (without infinity): 1-5-10, exp-15, +-131008.0, +-6.1035156E-5, +-5.9604645E-8, 3.311 digits</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> e = (x&amp;<span class="number">0x7C00</span>)&gt;&gt;<span class="number">10</span>; <span class="comment">// exponent</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> m = (x&amp;<span class="number">0x03FF</span>)&lt;&lt;<span class="number">13</span>; <span class="comment">// mantissa</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> v = <span class="built_in">as_uint</span>((<span class="type">float</span>)m)&gt;&gt;<span class="number">23</span>; <span class="comment">// evil log2 bit hack to count leading zeros in denormalized format</span></span><br><span class="line"><span class="keyword">return</span> <span class="built_in">as_float</span>((x&amp;<span class="number">0x8000</span>)&lt;&lt;<span class="number">16</span> | (e!=<span class="number">0</span>)*((e<span class="number">+112</span>)&lt;&lt;<span class="number">23</span>|m) | ((e==<span class="number">0</span>)&amp;(m!=<span class="number">0</span>))*((v<span class="number">-37</span>)&lt;&lt;<span class="number">23</span>|((m&lt;&lt;(<span class="number">150</span>-v))&amp;<span class="number">0x007FE000</span>))); <span class="comment">// sign : normalized : denormalized</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">uint16_t</span> <span class="title">float_to_half</span><span class="params">(<span class="type">const</span> <span class="type">float</span> x)</span> </span>&#123; <span class="comment">// IEEE-754 16-bit floating-point format (without infinity): 1-5-10, exp-15, +-131008.0, +-6.1035156E-5, +-5.9604645E-8, 3.311 digits</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> b = <span class="built_in">as_uint</span>(x)<span class="number">+0x00001000</span>; <span class="comment">// round-to-nearest-even: add last bit after truncated mantissa</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> e = (b&amp;<span class="number">0x7F800000</span>)&gt;&gt;<span class="number">23</span>; <span class="comment">// exponent</span></span><br><span class="line"><span class="type">const</span> <span class="type">uint32_t</span> m = b&amp;<span class="number">0x007FFFFF</span>; <span class="comment">// mantissa; in line below: 0x007FF000 = 0x00800000-0x00001000 = decimal indicator flag - initial rounding</span></span><br><span class="line"><span class="keyword">return</span> (b&amp;<span class="number">0x80000000</span>)&gt;&gt;<span class="number">16</span> | (e&gt;<span class="number">112</span>)*((((e<span class="number">-112</span>)&lt;&lt;<span class="number">10</span>)&amp;<span class="number">0x7C00</span>)|m&gt;&gt;<span class="number">13</span>) | ((e&lt;<span class="number">113</span>)&amp;(e&gt;<span class="number">101</span>))*((((<span class="number">0x007FF000</span>+m)&gt;&gt;(<span class="number">125</span>-e))<span class="number">+1</span>)&gt;&gt;<span class="number">1</span>) | (e&gt;<span class="number">143</span>)*<span class="number">0x7FFF</span>; <span class="comment">// sign : normalized : denormalized : saturate</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><!--stackedit_data:eyJoaXN0b3J5IjpbMTc1MTg4ODQ5OF19--></li></ul>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据处理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> FP16 </tag>
+            
+            <tag> FP32 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Git常用命令</title>
+      <link href="/2024/09/27/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/"/>
+      <url>/2024/09/27/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Git常用命令"><a href="#Git常用命令" class="headerlink" title="Git常用命令"></a>Git常用命令</h2><blockquote><p>全局config设置</p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">git config --global user.email xxxx@example.com</span><br><span class="line"></span><br></pre></td></tr></table></figure><blockquote><p>基础使用</p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">拉取：git <span class="built_in">clone</span> xxx.git &lt;-b branch --depth=1&gt;</span><br><span class="line">添加内容: git add . / git add -u </span><br><span class="line">提交并comment: git commit -m <span class="string">&quot;comment&quot;</span></span><br><span class="line">修改最近comment: git commit --amend</span><br><span class="line">合并commits: git rebase -i HEAD~n </span><br><span class="line">[针对每次提交选择操作，可选操作如下]</span><br><span class="line">- pick:保留commit</span><br><span class="line">- squash: 使用commit但合并到前一commit</span><br><span class="line">- reword: 使用commit并修改comment</span><br><span class="line">推送: git push origin &lt;branch&gt;</span><br><span class="line">推送指定分支: git push orign HEAD:refs/for/master</span><br><span class="line">新建分支: git checkout -b &lt;branch&gt;</span><br><span class="line">删除本地分支: git branch -d &lt;branch&gt;</span><br><span class="line">删除远程分支: git push origin --delete &lt;branch&gt;</span><br><span class="line">查看分支: git branch &lt;-a / -r&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure><!--stackedit_data:eyJoaXN0b3J5IjpbOTMwMjIzNjgzXX0=-->]]></content>
+      
+      
+      <categories>
+          
+          <category> Tools </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Git配置</title>
+      <link href="/2024/09/27/Git%E9%85%8D%E7%BD%AE/"/>
+      <url>/2024/09/27/Git%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h2><h3 id="缩写配置"><a href="#缩写配置" class="headerlink" title="缩写配置"></a>缩写配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[filter <span class="string">&quot;lfs&quot;</span>]</span><br><span class="line">smudge = git-lfs smudge -- %f</span><br><span class="line">required = <span class="literal">true</span></span><br><span class="line">clean = git-lfs clean -- %f</span><br><span class="line">[user]</span><br><span class="line">name = jkyang</span><br><span class="line">email = jkyang@example.com</span><br><span class="line">[lfs]</span><br><span class="line">url = https://lfs.example.com/</span><br><span class="line">[credential]</span><br><span class="line">helper = store</span><br><span class="line">[credential <span class="string">&quot;ssh://gerrit.bj.example.com&quot;</span>]</span><br><span class="line">username = jkyang</span><br><span class="line">[<span class="built_in">alias</span>]</span><br><span class="line">co = checkout</span><br><span class="line">st = status</span><br><span class="line">cm = commit -m</span><br><span class="line">br = branch</span><br><span class="line">bm = branch -m</span><br><span class="line">bd = branch -D</span><br><span class="line">cb = checkout -b</span><br><span class="line"><span class="built_in">df</span> = diff</span><br><span class="line"><span class="built_in">ls</span> = <span class="built_in">log</span> --<span class="built_in">stat</span></span><br><span class="line">lp = <span class="built_in">log</span> -p</span><br><span class="line">plo = pull origin</span><br><span class="line">plode = pull origin develop</span><br><span class="line">pho = push origin</span><br><span class="line">hist = <span class="built_in">log</span> --pretty=format:<span class="string">&#x27;%C(bold yellow)[%h]%C(reset) %C(green)[%ad]%C(reset) %C(blue)[%cr]%C(reset) | %C(red)%s %C(bold red)&lt;%an&gt;%C(reset) %C(blue)%d%C(reset)&#x27;</span> --graph --<span class="built_in">date</span>=short</span><br><span class="line">lg = <span class="built_in">log</span> --color --graph --pretty=format:<span class="string">&#x27;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27;</span> --abbrev-commit</span><br></pre></td></tr></table></figure><h3 id="补全配置"><a href="#补全配置" class="headerlink" title="补全配置"></a>补全配置</h3><blockquote><p>下载<a href="https://github.com/git/git/blob/master/contrib/completion/git-completion.bash">git-completion.bash</a>复制到~&#x2F;.git-completion.bash即可</p></blockquote><!--stackedit_data:eyJoaXN0b3J5IjpbLTE5Nzg0NzUyNTEsMzcyMDUxOTk4LC0yMDY3ODQxMDY5XX0=-->]]></content>
+      
+      
+      <categories>
+          
+          <category> Tools </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> git </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>OpenCV颜色</title>
+      <link href="/2024/09/27/OpenCV%E9%A2%9C%E8%89%B2/"/>
+      <url>/2024/09/27/OpenCV%E9%A2%9C%E8%89%B2/</url>
+      
+        <content type="html"><![CDATA[<h2 id="OpenCV颜色"><a href="#OpenCV颜色" class="headerlink" title="OpenCV颜色"></a>OpenCV颜色</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_RED cv::Scalar(0,0,255) <span class="comment">//纯红</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_GREEN cv::Scalar(0,255,0) <span class="comment">//纯绿</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_BLUE cv::Scalar(255,0,0) <span class="comment">//纯蓝</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_DARKGRAY cv::Scalar(169,169,169) <span class="comment">//深灰色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_DARKRED cv::Scalar(0,0,139) <span class="comment">//深红色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_ORANGERED cv::Scalar(0,69,255) <span class="comment">//橙红色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_CHOCOLATE cv::Scalar(30,105,210) <span class="comment">//巧克力</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_GOLD cv::Scalar(10,215,255) <span class="comment">//金色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_YELLOW cv::Scalar(0,255,255) <span class="comment">//纯黄色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_OLIVE cv::Scalar(0,128,128) <span class="comment">//橄榄色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_LIGHTGREEN cv::Scalar(144,238,144) <span class="comment">//浅绿色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_DARKCYAN cv::Scalar(139,139,0) <span class="comment">//深青色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_SKYBLUE cv::Scalar(230,216,173) <span class="comment">//天蓝色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_INDIGO cv::Scalar(130,0,75) <span class="comment">//藏青色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_PURPLE cv::Scalar(128,0,128) <span class="comment">//紫色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_PINK cv::Scalar(203,192,255) <span class="comment">//粉色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_DEEPPINK cv::Scalar(147,20,255) <span class="comment">//深粉色</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> CV_COLOR_VIOLET cv::Scalar(238,130,238) <span class="comment">//紫罗兰</span></span></span><br></pre></td></tr></table></figure><!--stackedit_data:eyJoaXN0b3J5IjpbLTkyNTkxOTcxN119-->]]></content>
+      
+      
+      <categories>
+          
+          <category> OpenCV </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> opencv </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Terminator使用记录</title>
+      <link href="/2024/09/27/Terminator%E9%85%8D%E7%BD%AE/"/>
+      <url>/2024/09/27/Terminator%E9%85%8D%E7%BD%AE/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Terminator使用记录"><a href="#Terminator使用记录" class="headerlink" title="Terminator使用记录"></a>Terminator使用记录</h2><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><blockquote><p>sudo apt-get install terminator</p></blockquote><h3 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h3><blockquote><p>~&#x2F;.config&#x2F;terminator&#x2F;config</p></blockquote><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">[global_config]</span><br><span class="line">handle_size = -3</span><br><span class="line">title_transmit_fg_color = <span class="string">&quot;#000000&quot;</span></span><br><span class="line">title_transmit_bg_color = <span class="string">&quot;#3e3838&quot;</span></span><br><span class="line">inactive_color_offset = 1.0</span><br><span class="line">enabled_plugins = CustomCommandsMenu, LaunchpadCodeURLHandler, APTURLHandler, LaunchpadBugURLHandler</span><br><span class="line">suppress_multiple_term_dialog = True</span><br><span class="line"></span><br><span class="line">[keybindings]</span><br><span class="line">[layouts]</span><br><span class="line">[[default]]</span><br><span class="line">[[[child1]]]</span><br><span class="line">parent = window0</span><br><span class="line"><span class="built_in">type</span> = Terminal</span><br><span class="line">[[[window0]]]</span><br><span class="line">parent = <span class="string">&quot;&quot;</span></span><br><span class="line"><span class="built_in">type</span> = Window</span><br><span class="line">[plugins]</span><br><span class="line">[profiles]</span><br><span class="line">[[default]]</span><br><span class="line">[[jkyang]]</span><br><span class="line">audible_bell = True</span><br><span class="line">background_color = <span class="string">&quot;#002b36&quot;</span></span><br><span class="line">background_darkness = 0.74</span><br><span class="line">background_image = None</span><br><span class="line">background_type = transparent</span><br><span class="line">cursor_color = <span class="string">&quot;#92f7ea&quot;</span></span><br><span class="line">custom_command = <span class="built_in">sudo</span> -i</span><br><span class="line">font = Ubuntu Mono 13</span><br><span class="line">foreground_color = <span class="string">&quot;#9af792&quot;</span></span><br><span class="line">palette = <span class="string">&quot;#073642:#dc322f:#859900:#b58900:#268bd2:#d33682:#2aa198:#eee8d5:#002b36:#cb4b16:#586e75:#657b83:#839496:#6c71c4:#93a1a1:#fdf6e3&quot;</span></span><br><span class="line">scroll_background = False</span><br><span class="line">scrollback_lines = 3000</span><br><span class="line">scrollbar_position = hidden</span><br><span class="line">urgent_bell = True</span><br><span class="line">use_custom_command = True</span><br><span class="line">use_system_font = False</span><br><span class="line">visible_bell = True</span><br></pre></td></tr></table></figure><!--stackedit_data:eyJoaXN0b3J5IjpbLTEzMjEzMzQxMjhdfQ==-->]]></content>
+      
+      
+      <categories>
+          
+          <category> Tools </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> terminal </tag>
+            
+            <tag> ssh </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>Ubuntu多版本管理</title>
+      <link href="/2024/09/27/ubuntu%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/"/>
+      <url>/2024/09/27/ubuntu%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/</url>
+      
+        <content type="html"><![CDATA[<h2 id="Ubuntu多版本管理"><a href="#Ubuntu多版本管理" class="headerlink" title="Ubuntu多版本管理"></a>Ubuntu多版本管理</h2><h3 id="GCC、G-多版本"><a href="#GCC、G-多版本" class="headerlink" title="GCC、G++多版本"></a>GCC、G++多版本</h3><ol><li><p>以gcc为例，ls &#x2F;usr&#x2F;bin&#x2F;gcc*查看当前有哪些版本，若无需要版本apt-get install即可</p></li><li><p>对于不同版本设置不同等级，等级越高，优先级越高</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">sudo</span> update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-4.9 40</span><br><span class="line"><span class="built_in">sudo</span> update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-5 50</span><br><span class="line"><span class="built_in">sudo</span> update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-4.9 40</span><br><span class="line"><span class="built_in">sudo</span> update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-5 50</span><br></pre></td></tr></table></figure></li><li><p>版本切换</p><blockquote><ul><li>update-alternatives _–config xxx (其中xxx即为需要管理的工具)</li><li>输入编号即可切换到对应版本</li></ul></blockquote></li><li><p>删除可选项</p><blockquote><p>update-alternatives  –remove gcc &#x2F;usr&#x2F;bin&#x2F;gcc-4.9</p></blockquote></li><li><p>clang-format管理</p><blockquote><p>update-alternatives –install &#x2F;usr&#x2F;bin&#x2F;clang-format clang-format ~&#x2F;.vscode&#x2F;extensions&#x2F;ms-vscode.cpptools-1.2.2&#x2F;LLVM&#x2F;bin&#x2F;clang-format 100</p></blockquote><!--stackedit_data:eyJoaXN0b3J5IjpbLTg4NzUxNDI5N119--></li></ol>]]></content>
+      
+      
+      <categories>
+          
+          <category> Tools </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> alternatives </tag>
+            
+            <tag> gcc </tag>
+            
+            <tag> clang-format </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>博客发布脚本</title>
+      <link href="/2024/09/27/%E4%B8%80%E9%94%AE%E5%8F%91%E5%B8%83%E8%84%9A%E6%9C%AC/"/>
+      <url>/2024/09/27/%E4%B8%80%E9%94%AE%E5%8F%91%E5%B8%83%E8%84%9A%E6%9C%AC/</url>
+      
+        <content type="html"><![CDATA[<h2 id="博客发布脚本"><a href="#博客发布脚本" class="headerlink" title="博客发布脚本"></a>博客发布脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">root=$(<span class="built_in">pwd</span>)</span><br><span class="line"><span class="comment"># 1.备份博客源文件</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始备份源文件&quot;</span></span><br><span class="line"><span class="built_in">cd</span> stackedit-app-data </span><br><span class="line">date_tmp=$(<span class="built_in">date</span> +%Y/%m/%d-%H:%M:%S)</span><br><span class="line">git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin master</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译博客</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始编译博客&quot;</span></span><br><span class="line"><span class="built_in">cp</span> -R stackedit-app/Blog/* hexo/source/_posts/</span><br><span class="line"><span class="built_in">cd</span> hexo &amp;&amp; hexo clean &amp;&amp; hexo g</span><br><span class="line"><span class="built_in">cd</span> themes/matery &amp;&amp; git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span>/hexo &amp;&amp; git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin main</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span> &amp;&amp; <span class="built_in">cp</span> -R hexo/public/* stackedit-app/Blog/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.部署博客</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始部署博客&quot;</span></span><br><span class="line"><span class="built_in">cd</span> ae2leowen.github.io</span><br><span class="line">git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin main</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;发布完成，前往 https://ae2leowen.github.io 查看&quot;</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 博客发布 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 博客发布 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title>图像颜色空间</title>
+      <link href="/2024/09/27/%E5%9B%BE%E5%83%8F%E9%A2%9C%E8%89%B2%E7%A9%BA%E9%97%B4/"/>
+      <url>/2024/09/27/%E5%9B%BE%E5%83%8F%E9%A2%9C%E8%89%B2%E7%A9%BA%E9%97%B4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="OpenCV颜色"><a href="#OpenCV颜色" class="headerlink" title="OpenCV颜色"></a>OpenCV颜色</h2><h3 id="Gray8"><a href="#Gray8" class="headerlink" title="Gray8"></a>Gray8</h3><blockquote><p> Gray8: unsigned char* 存储, 每个像素用一个uchar表示,所以表示范围在[0,255], 一个长x款为HxW的灰度图, 占据HxWx1字节的大小</p></blockquote><h3 id="RGB888"><a href="#RGB888" class="headerlink" title="RGB888"></a>RGB888</h3><p><a href="https://cloud.tencent.com/developer/article/1612538">详解1</a> <a href="%5Bhttps://yangandmore.github.io/2019/03/27/%E5%9B%BE%E7%89%87RGB%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F/%5D(https://yangandmore.github.io/2019/03/27/%E5%9B%BE%E7%89%87RGB%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F/)">详解2</a></p><blockquote><p>unsigned char* 存储, 每个像素用三个uchar表示, 共占24的位也即3个字节, 内存中存储时为BGRBGRBGRBGR</p></blockquote><h3 id="YUV"><a href="#YUV" class="headerlink" title="YUV"></a>YUV</h3><blockquote><p>Yuv420p和yuv420sp只是存储的方式不一样，但所占内存是一样的，（其他对应yuv planner和yuv sp同理），yuv420p先存储所有y，再存储所有u，最后存储所有v，但yuv420sp先存储所有y，之后uv交替存储</p></blockquote><blockquote><p>占据内存计算示例：首先，不管哪种格式，每一个y或每一个u或每一个v都占一个字节，对于yuv420p，4个y共享一组uv（其中4是2x2,即横向2纵向2,如下图），所以对于某一个像素，占用一个y消耗一个字节，共享一组uv所以等价为消耗了1&#x2F;4的uv分量的内存，而一组uv占据了2个字节，因此单个像素占的字节是1+2&#x2F;4&#x3D;1.5，其他类似</p></blockquote><ul><li><p>yuv420p如下 :</p><blockquote><p>偶数行，偶数列获取U，奇数行，偶数列获取V<br>  <img src="https://dn9ky7i45q.feishu.cn/space/api/box/stream/download/asynccode/?code=Y2Q1ZTY2M2EyYTVmZjQ1OTVhMWMwNDJjZDhjMjk1MjRfZUliTHg3bXNuWWtkMTEyNzU4Tjg3TXVIUzVoQ1V2RWZfVG9rZW46Ym94Y256V0JmdHhrVXhCbmhsVnVrUnhDSWJiXzE3Mjc0MjgwODE6MTcyNzQzMTY4MV9WNA" alt="示意图"></p></blockquote></li><li><p>yuv420sp如下：</p><blockquote><p>偶数行，偶数列获取U，V<img src="https://dn9ky7i45q.feishu.cn/space/api/box/stream/download/asynccode/?code=NTQ2YzgxYTliMmRlN2RkYTNmYjQ0YWUyOTk3Mjc5YTdfOTdXM1dhNFkwbHFBbG9mb2JrSERkbmZCUXdCVEZIanJfVG9rZW46Ym94Y25iTXZIZTJwMFFjMkNLNkJXcWczVEZkXzE3Mjc0MjgyMzk6MTcyNzQzMTgzOV9WNA"></p></blockquote></li></ul><!--stackedit_data:eyJoaXN0b3J5IjpbLTE2Mjg1MTM5MTVdfQ==-->]]></content>
+      
+      
+      <categories>
+          
+          <category> 图像处理 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> RGB </tag>
+            
+            <tag> YUV </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
+      <title></title>
+      <link href="/2024/09/27/%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/"/>
+      <url>/2024/09/27/%E6%90%AD%E5%BB%BA%E7%BD%91%E7%AB%99/</url>
+      
+        <content type="html"><![CDATA[<h1 id="记录基于github搭建网站"><a href="#记录基于github搭建网站" class="headerlink" title="记录基于github搭建网站"></a>记录基于github搭建网站</h1><p>简单记录基于github搭建个人博客站，万一后面忘了呢！！！</p><h2 id="创建"><a href="#创建" class="headerlink" title="创建&lt;博客仓库&gt;"></a>创建&lt;博客仓库&gt;</h2><ul><li><p>新建github仓库：</p><blockquote><p>仓库名为<username>.github.io，例如github的username是zhangsan，则仓库名为zhangsan.github.io, 可以选择创建时直接初始化，或者clone到本地自己初始化，和平常仓库创建无差</p></blockquote></li><li><p>设置pages</p><blockquote><p>github页面找到刚创建的仓库，点击最右侧的settings，并在settings界面左侧列找到pages点击，选择一个分支(如果只是初始化过那就只有一个main分支)并点击save，网页就发布成功了</p></blockquote></li><li><p>下载代码</p><blockquote><p>正常下载刚刚创建的仓库代码到本地<br>git clone xxx.git</p></blockquote></li></ul><h2 id="创建-1"><a href="#创建-1" class="headerlink" title="创建&lt;框架仓库&gt;"></a>创建&lt;框架仓库&gt;</h2><ul><li>安装hexo<ul><li>安装Node.js -&gt; <a href="https://nodejs.org/en/">官网</a></li><li>安装hexo(也可以用其他的) -&gt; <code>npm install -g hexo</code></li><li>关于hexo<a href="https://hexo.io/zh-cn/">官网</a></li></ul></li><li>初始化仓库<ul><li>用你最喜欢的方式创建一个新仓库并下载到本地</li><li>初始化框架 -&gt; <code>hexo init</code>等待完成</li></ul></li></ul><h2 id="发布内容"><a href="#发布内容" class="headerlink" title="发布内容"></a>发布内容</h2><ul><li><p>写博客</p><blockquote><p>在<strong>框架仓库</strong>中初始化完成后，会下载多个文件夹，在source&#x2F;_posts中新增md文件，一个即为一篇文章</p></blockquote></li><li><p>生成源码 </p><blockquote><p><code>hexo generate</code> 完成后会生成<code>public</code>文件夹，里面的所有文件即为框架生成的网站源码</p></blockquote></li><li><p>发布网站</p><blockquote><ul><li>拷贝<code>public</code>中所有内容到 <strong>博客仓库</strong> 源码中</li><li>提交到 <strong>博客仓库</strong> 中对应分支(即设置pages中选择的分支)即可</li></ul></blockquote></li></ul><h2 id="美化网站"><a href="#美化网站" class="headerlink" title="美化网站"></a>美化网站</h2><blockquote><p>网站找个自己喜欢的hexo框架适用的任意模板</p></blockquote><h3 id="Matery"><a href="#Matery" class="headerlink" title="Matery"></a><a href="https://github.com/blinkfox/hexo-theme-matery">Matery</a></h3><ul><li>下载模板<blockquote><ul><li>进入<strong>框架仓库</strong>，找到themes文件夹 <code>cd themes</code></li><li>下载源码 <code>git clone git@github.com:blinkfox/hexo-theme-matery.git --depth=1</code></li><li>参照官网文件修改自己的内容即可</li></ul></blockquote></li></ul><!--stackedit_data:eyJoaXN0b3J5IjpbLTIxMTUwMzMyOTNdfQ==-->]]></content>
+      
+      
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>搭建个人网站</title>
       <link href="/2024/09/27/setup_website/"/>
       <url>/2024/09/27/setup_website/</url>
