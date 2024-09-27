@@ -8,9 +8,13 @@
     <meta name="description" content="Git常用命令
 全局config设置
 
-123git config --global user.name &amp;quot;xxxx&amp;quot;git config --global user.email xxxx@example.com
+git config --global user.name &#34;xxxx&#34;
+git config --global user.email xxxx@example.com
 
-基础">
+
+基础使用
+
+拉取：git ">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -352,11 +356,28 @@
                 <h2 id="Git常用命令"><a href="#Git常用命令" class="headerlink" title="Git常用命令"></a>Git常用命令</h2><blockquote>
 <p>全局config设置</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name <span class="string">&quot;xxxx&quot;</span></span><br><span class="line">git config --global user.email xxxx@example.com</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name <span class="token string">"xxxx"</span>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email xxxx@example.com
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <blockquote>
 <p>基础使用</p>
 </blockquote>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">拉取：git <span class="built_in">clone</span> xxx.git &lt;-b branch --depth=1&gt;</span><br><span class="line">添加内容: git add . / git add -u </span><br><span class="line">提交并comment: git commit -m <span class="string">&quot;comment&quot;</span></span><br><span class="line">修改最近comment: git commit --amend</span><br><span class="line">合并commits: git rebase -i HEAD~n </span><br><span class="line">	[针对每次提交选择操作，可选操作如下]</span><br><span class="line">	- pick:保留commit</span><br><span class="line">	- squash: 使用commit但合并到前一commit</span><br><span class="line">	- reword: 使用commit并修改comment</span><br><span class="line">推送: git push origin &lt;branch&gt;</span><br><span class="line">推送指定分支: git push orign HEAD:refs/for/master</span><br><span class="line">新建分支: git checkout -b &lt;branch&gt;</span><br><span class="line">删除本地分支: git branch -d &lt;branch&gt;</span><br><span class="line">删除远程分支: git push origin --delete &lt;branch&gt;</span><br><span class="line">查看分支: git branch &lt;-a / -r&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="line-numbers language-bash" data-language="bash"><code class="language-bash">拉取：git clone xxx.git <span class="token operator">&lt;</span>-b branch <span class="token parameter variable">--depth</span><span class="token operator">=</span><span class="token operator"><span class="token file-descriptor important">1</span>></span>
+添加内容: <span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> / <span class="token function">git</span> <span class="token function">add</span> <span class="token parameter variable">-u</span> 
+提交并comment: <span class="token function">git</span> commit <span class="token parameter variable">-m</span> <span class="token string">"comment"</span>
+修改最近comment: <span class="token function">git</span> commit <span class="token parameter variable">--amend</span>
+合并commits: <span class="token function">git</span> rebase <span class="token parameter variable">-i</span> HEAD~n 
+	<span class="token punctuation">[</span>针对每次提交选择操作，可选操作如下<span class="token punctuation">]</span>
+	- pick:保留commit
+	- squash: 使用commit但合并到前一commit
+	- reword: 使用commit并修改comment
+推送: <span class="token function">git</span> push origin <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+推送指定分支: <span class="token function">git</span> push orign HEAD:refs/for/master
+新建分支: <span class="token function">git</span> checkout <span class="token parameter variable">-b</span> <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+删除本地分支: <span class="token function">git</span> branch <span class="token parameter variable">-d</span> <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+删除远程分支: <span class="token function">git</span> push origin <span class="token parameter variable">--delete</span> <span class="token operator">&lt;</span>branch<span class="token operator">></span>
+查看分支: <span class="token function">git</span> branch <span class="token operator">&lt;</span>-a / -r<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 
 <!--stackedit_data:

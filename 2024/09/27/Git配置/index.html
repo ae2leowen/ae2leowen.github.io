@@ -5,7 +5,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="Git配置, JkYang&#39;s Blog">
-    <meta name="description" content="Git配置缩写配置1234567891011121314151617181920212223242526272829[filter &amp;quot;lfs&amp;quot;]	smudge = git-lfs smudge -- %f	require">
+    <meta name="description" content="Git配置缩写配置[filter &#34;lfs&#34;]
+	smudge = git-lfs smudge -- %f
+	required = true
+	clean = git-lfs clean -- %f
+[user]
+	name = jkya">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -344,7 +349,35 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h2><h3 id="缩写配置"><a href="#缩写配置" class="headerlink" title="缩写配置"></a>缩写配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">[filter <span class="string">&quot;lfs&quot;</span>]</span><br><span class="line">	smudge = git-lfs smudge -- %f</span><br><span class="line">	required = <span class="literal">true</span></span><br><span class="line">	clean = git-lfs clean -- %f</span><br><span class="line">[user]</span><br><span class="line">	name = jkyang</span><br><span class="line">	email = jkyang@example.com</span><br><span class="line">[lfs]</span><br><span class="line">	url = https://lfs.example.com/</span><br><span class="line">[credential]</span><br><span class="line">	helper = store</span><br><span class="line">[credential <span class="string">&quot;ssh://gerrit.bj.example.com&quot;</span>]</span><br><span class="line">	username = jkyang</span><br><span class="line">[<span class="built_in">alias</span>]</span><br><span class="line">	co = checkout</span><br><span class="line">	st = status</span><br><span class="line">	cm = commit -m</span><br><span class="line">	br = branch</span><br><span class="line">	bm = branch -m</span><br><span class="line">	bd = branch -D</span><br><span class="line">	cb = checkout -b</span><br><span class="line">	<span class="built_in">df</span> = diff</span><br><span class="line">	<span class="built_in">ls</span> = <span class="built_in">log</span> --<span class="built_in">stat</span></span><br><span class="line">	lp = <span class="built_in">log</span> -p</span><br><span class="line">	plo = pull origin</span><br><span class="line">	plode = pull origin develop</span><br><span class="line">	pho = push origin</span><br><span class="line">	hist = <span class="built_in">log</span> --pretty=format:<span class="string">&#x27;%C(bold yellow)[%h]%C(reset) %C(green)[%ad]%C(reset) %C(blue)[%cr]%C(reset) | %C(red)%s %C(bold red)&lt;%an&gt;%C(reset) %C(blue)%d%C(reset)&#x27;</span> --graph --<span class="built_in">date</span>=short</span><br><span class="line">	lg = <span class="built_in">log</span> --color --graph --pretty=format:<span class="string">&#x27;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an&gt;%Creset&#x27;</span> --abbrev-commit</span><br></pre></td></tr></table></figure>
+                <h2 id="Git配置"><a href="#Git配置" class="headerlink" title="Git配置"></a>Git配置</h2><h3 id="缩写配置"><a href="#缩写配置" class="headerlink" title="缩写配置"></a>缩写配置</h3><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token punctuation">[</span>filter <span class="token string">"lfs"</span><span class="token punctuation">]</span>
+	smudge <span class="token operator">=</span> git-lfs smudge -- %f
+	required <span class="token operator">=</span> <span class="token boolean">true</span>
+	clean <span class="token operator">=</span> git-lfs clean -- %f
+<span class="token punctuation">[</span>user<span class="token punctuation">]</span>
+	name <span class="token operator">=</span> jkyang
+	email <span class="token operator">=</span> jkyang@example.com
+<span class="token punctuation">[</span>lfs<span class="token punctuation">]</span>
+	url <span class="token operator">=</span> https://lfs.example.com/
+<span class="token punctuation">[</span>credential<span class="token punctuation">]</span>
+	helper <span class="token operator">=</span> store
+<span class="token punctuation">[</span>credential <span class="token string">"ssh://gerrit.bj.example.com"</span><span class="token punctuation">]</span>
+	username <span class="token operator">=</span> jkyang
+<span class="token punctuation">[</span>alias<span class="token punctuation">]</span>
+	co <span class="token operator">=</span> checkout
+	st <span class="token operator">=</span> status
+	cm <span class="token operator">=</span> commit <span class="token parameter variable">-m</span>
+	br <span class="token operator">=</span> branch
+	bm <span class="token operator">=</span> branch <span class="token parameter variable">-m</span>
+	bd <span class="token operator">=</span> branch <span class="token parameter variable">-D</span>
+	cb <span class="token operator">=</span> checkout <span class="token parameter variable">-b</span>
+	<span class="token function">df</span> <span class="token operator">=</span> <span class="token function">diff</span>
+	<span class="token function">ls</span> <span class="token operator">=</span> log <span class="token parameter variable">--stat</span>
+	lp <span class="token operator">=</span> log <span class="token parameter variable">-p</span>
+	plo <span class="token operator">=</span> pull origin
+	plode <span class="token operator">=</span> pull origin develop
+	pho <span class="token operator">=</span> push origin
+	hist <span class="token operator">=</span> log <span class="token parameter variable">--pretty</span><span class="token operator">=</span>format:<span class="token string">'%C(bold yellow)[%h]%C(reset) %C(green)[%ad]%C(reset) %C(blue)[%cr]%C(reset) | %C(red)%s %C(bold red)&lt;%an>%C(reset) %C(blue)%d%C(reset)'</span> <span class="token parameter variable">--graph</span> <span class="token parameter variable">--date</span><span class="token operator">=</span>short
+	lg <span class="token operator">=</span> log <span class="token parameter variable">--color</span> <span class="token parameter variable">--graph</span> <span class="token parameter variable">--pretty</span><span class="token operator">=</span>format:<span class="token string">'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)&lt;%an>%Creset'</span> --abbrev-commit<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 
 <h3 id="补全配置"><a href="#补全配置" class="headerlink" title="补全配置"></a>补全配置</h3><blockquote>
 <p>下载<a target="_blank" rel="noopener" href="https://github.com/git/git/blob/master/contrib/completion/git-completion.bash">git-completion.bash</a>复制到~&#x2F;.git-completion.bash即可</p>
@@ -516,13 +549,13 @@ Y3ODQxMDY5XX0=
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2024/09/27/Terminator%E9%85%8D%E7%BD%AE/">
+                <a href="/2024/09/27/OpenCV%E9%A2%9C%E8%89%B2/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="Terminator使用记录">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="OpenCV颜色">
                         
-                        <span class="card-title">Terminator使用记录</span>
+                        <span class="card-title">OpenCV颜色</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -539,8 +572,8 @@ Y3ODQxMDY5XX0=
                             
                             <i class="fas fa-bookmark fa-fw icon-category"></i>
                             
-                            <a href="/categories/Tools/" class="post-category">
-                                    Tools
+                            <a href="/categories/OpenCV/" class="post-category">
+                                    OpenCV
                                 </a>
                             
                             
@@ -550,12 +583,8 @@ Y3ODQxMDY5XX0=
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/terminal/">
-                        <span class="chip bg-color">terminal</span>
-                    </a>
-                    
-                    <a href="/tags/ssh/">
-                        <span class="chip bg-color">ssh</span>
+                    <a href="/tags/opencv/">
+                        <span class="chip bg-color">opencv</span>
                     </a>
                     
                 </div>

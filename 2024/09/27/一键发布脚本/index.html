@@ -5,7 +5,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="keywords" content="博客发布脚本, JkYang&#39;s Blog">
-    <meta name="description" content="博客发布脚本123456789101112131415161718192021222324252627282930#!/bin/bashroot=$(pwd)blog_prj=stackedit-app-datawebs_prj=ae2le">
+    <meta name="description" content="博客发布脚本#!/bin/bash
+root=$(pwd)
+
+blog_prj=stackedit-app-data
+webs_prj=ae2leowen.github.io
+tplt_prj=hexo
+tplt_theme=matery
+">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <meta name="renderer" content="webkit|ie-stand|ie-comp">
@@ -344,7 +351,36 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="博客发布脚本"><a href="#博客发布脚本" class="headerlink" title="博客发布脚本"></a>博客发布脚本</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line">root=$(<span class="built_in">pwd</span>)</span><br><span class="line"></span><br><span class="line">blog_prj=stackedit-app-data</span><br><span class="line">webs_prj=ae2leowen.github.io</span><br><span class="line">tplt_prj=hexo</span><br><span class="line">tplt_theme=matery</span><br><span class="line"></span><br><span class="line"><span class="comment"># 1.备份博客源文件</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始备份源文件&quot;</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$blog_prj</span> </span><br><span class="line">date_tmp=$(<span class="built_in">date</span> +%Y/%m/%d-%H:%M:%S)</span><br><span class="line">git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin master</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 2.编译博客</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始编译博客&quot;</span></span><br><span class="line"><span class="built_in">cp</span> -R <span class="variable">$blog_prj</span>/Blog/* <span class="variable">$tplt_prj</span>/source/_posts/</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$tplt_prj</span> &amp;&amp; hexo clean &amp;&amp; hexo g</span><br><span class="line"><span class="built_in">cd</span> themes/<span class="variable">$tplt_theme</span> &amp;&amp; git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin main</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span>/<span class="variable">$tplt_prj</span> &amp;&amp; git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin main</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span> &amp;&amp; <span class="built_in">cp</span> -R <span class="variable">$tplt_prj</span>/public/* <span class="variable">$webs_prj</span>/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 3.部署博客</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;开始部署博客&quot;</span></span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$webs_prj</span></span><br><span class="line">git add . &amp;&amp; git cm <span class="string">&quot;update <span class="variable">$date_tmp</span>&quot;</span> &amp;&amp; git push origin main</span><br><span class="line"><span class="built_in">cd</span> <span class="variable">$root</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;发布完成，前往 https://ae2leowen.github.io 查看&quot;</span></span><br></pre></td></tr></table></figure>
+                <h2 id="博客发布脚本"><a href="#博客发布脚本" class="headerlink" title="博客发布脚本"></a>博客发布脚本</h2><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token shebang important">#!/bin/bash</span>
+<span class="token assign-left variable">root</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token builtin class-name">pwd</span><span class="token variable">)</span></span>
+
+<span class="token assign-left variable">blog_prj</span><span class="token operator">=</span>stackedit-app-data
+<span class="token assign-left variable">webs_prj</span><span class="token operator">=</span>ae2leowen.github.io
+<span class="token assign-left variable">tplt_prj</span><span class="token operator">=</span>hexo
+<span class="token assign-left variable">tplt_theme</span><span class="token operator">=</span>matery
+
+<span class="token comment"># 1.备份博客源文件</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"开始备份源文件"</span>
+<span class="token builtin class-name">cd</span> <span class="token variable">$blog_prj</span> 
+<span class="token assign-left variable">date_tmp</span><span class="token operator">=</span><span class="token variable"><span class="token variable">$(</span><span class="token function">date</span> +%Y/%m/%d-%H:%M:%S<span class="token variable">)</span></span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> cm <span class="token string">"update <span class="token variable">$date_tmp</span>"</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push origin master
+<span class="token builtin class-name">cd</span> <span class="token variable">$root</span>
+
+<span class="token comment"># 2.编译博客</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"开始编译博客"</span>
+<span class="token function">cp</span> <span class="token parameter variable">-R</span> <span class="token variable">$blog_prj</span>/Blog/* <span class="token variable">$tplt_prj</span>/source/_posts/
+<span class="token builtin class-name">cd</span> <span class="token variable">$tplt_prj</span> <span class="token operator">&amp;&amp;</span> hexo clean <span class="token operator">&amp;&amp;</span> hexo g
+<span class="token builtin class-name">cd</span> themes/<span class="token variable">$tplt_theme</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> cm <span class="token string">"update <span class="token variable">$date_tmp</span>"</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push origin main
+<span class="token builtin class-name">cd</span> <span class="token variable">$root</span>/<span class="token variable">$tplt_prj</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> cm <span class="token string">"update <span class="token variable">$date_tmp</span>"</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push origin main
+<span class="token builtin class-name">cd</span> <span class="token variable">$root</span> <span class="token operator">&amp;&amp;</span> <span class="token function">cp</span> <span class="token parameter variable">-R</span> <span class="token variable">$tplt_prj</span>/public/* <span class="token variable">$webs_prj</span>/
+
+<span class="token comment"># 3.部署博客</span>
+<span class="token builtin class-name">echo</span> <span class="token string">"开始部署博客"</span>
+<span class="token builtin class-name">cd</span> <span class="token variable">$webs_prj</span>
+<span class="token function">git</span> <span class="token function">add</span> <span class="token builtin class-name">.</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> cm <span class="token string">"update <span class="token variable">$date_tmp</span>"</span> <span class="token operator">&amp;&amp;</span> <span class="token function">git</span> push origin main
+<span class="token builtin class-name">cd</span> <span class="token variable">$root</span>
+
+<span class="token builtin class-name">echo</span> <span class="token string">"发布完成，前往 https://ae2leowen.github.io 查看"</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
                 
             </div>
             <hr/>

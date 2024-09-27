@@ -447,7 +447,9 @@
                             <div class="summary block-with-text">
                                 
                                     FP16和FP32互转
-C++版本1234567891011121314151617181920typedef unsigned short uint16_t;//占用2个字节typedef unsigned int uint32_t; /
+C++版本typedef unsigned short uint16_t;//占用2个字节
+typedef unsigned int uint32_t; //占用4个字节
+uint32_t as_uint(const
                                 
                             </div>
                             <div class="publish-info">
@@ -511,9 +513,13 @@ C++版本1234567891011121314151617181920typedef unsigned short uint16_t;//占用
                                     Git常用命令
 全局config设置
 
-123git config --global user.name &quot;xxxx&quot;git config --global user.email xxxx@example.com
+git config --global user.name "xxxx"
+git config --global user.email xxxx@example.com
 
-基础
+
+基础使用
+
+拉取：git 
                                 
                             </div>
                             <div class="publish-info">
@@ -572,7 +578,12 @@ C++版本1234567891011121314151617181920typedef unsigned short uint16_t;//占用
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    Git配置缩写配置1234567891011121314151617181920212223242526272829[filter &quot;lfs&quot;]	smudge = git-lfs smudge -- %f	require
+                                    Git配置缩写配置[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	required = true
+	clean = git-lfs clean -- %f
+[user]
+	name = jkya
                                 
                             </div>
                             <div class="publish-info">
@@ -619,6 +630,67 @@ C++版本1234567891011121314151617181920typedef unsigned short uint16_t;//占用
             <article class="cd-timeline-content" data-aos="fade-up">
                 <div class="article col s12 m6">
                     <div class="card">
+                        <a href="/2024/09/27/OpenCV%E9%A2%9C%E8%89%B2/">
+                            <div class="card-image">
+                                
+                                
+                                <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="OpenCV颜色">
+                                
+                                <span class="card-title">OpenCV颜色</span>
+                            </div>
+                        </a>
+                        <div class="card-content article-content">
+                            <div class="summary block-with-text">
+                                
+                                    OpenCV颜色#define CV_COLOR_RED cv::Scalar(0,0,255) //纯红
+#define CV_COLOR_GREEN cv::Scalar(0,255,0) //纯绿
+#define CV_COLOR_B
+                                
+                            </div>
+                            <div class="publish-info">
+                                <span class="publish-date">
+                                    <i class="far fa-clock fa-fw icon-date"></i>2024-09-27
+                                </span>
+                                <span class="publish-author">
+                                    
+                                    <i class="fas fa-bookmark fa-fw icon-category"></i>
+                                    
+                                    <a href="/categories/OpenCV/" class="post-category">
+                                    OpenCV
+                                    </a>
+                                    
+                                    
+                                </span>
+                            </div>
+                        </div>
+
+                        
+                        <div class="card-action article-tags">
+                            
+                            <a href="/tags/opencv/"><span class="chip bg-color">opencv</span></a>
+                            
+                        </div>
+                        
+                    </div>
+                </div>
+            </article>
+        </div>
+        
+        <div class="cd-timeline-block">
+
+            
+            
+
+            
+            
+
+            
+            <div class="cd-timeline-img day" data-aos="zoom-in-up">
+                <span>27</span>
+            </div>
+            <article class="cd-timeline-content" data-aos="fade-up">
+                <div class="article col s12 m6">
+                    <div class="card">
                         <a href="/2024/09/27/Terminator%E9%85%8D%E7%BD%AE/">
                             <div class="card-image">
                                 
@@ -637,7 +709,8 @@ sudo apt-get install terminator
 配置
 ~&#x2F;.config&#x2F;terminator&#x2F;config
 
-12345678910111213141516
+[global_config]
+	handle
                                 
                             </div>
                             <div class="publish-info">
@@ -686,65 +759,6 @@ sudo apt-get install terminator
             <article class="cd-timeline-content" data-aos="fade-up">
                 <div class="article col s12 m6">
                     <div class="card">
-                        <a href="/2024/09/27/OpenCV%E9%A2%9C%E8%89%B2/">
-                            <div class="card-image">
-                                
-                                
-                                <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="OpenCV颜色">
-                                
-                                <span class="card-title">OpenCV颜色</span>
-                            </div>
-                        </a>
-                        <div class="card-content article-content">
-                            <div class="summary block-with-text">
-                                
-                                    OpenCV颜色123456789101112131415161718#define CV_COLOR_RED cv::Scalar(0,0,255) //纯红#define CV_COLOR_GREEN cv::Scalar(0,255,
-                                
-                            </div>
-                            <div class="publish-info">
-                                <span class="publish-date">
-                                    <i class="far fa-clock fa-fw icon-date"></i>2024-09-27
-                                </span>
-                                <span class="publish-author">
-                                    
-                                    <i class="fas fa-bookmark fa-fw icon-category"></i>
-                                    
-                                    <a href="/categories/OpenCV/" class="post-category">
-                                    OpenCV
-                                    </a>
-                                    
-                                    
-                                </span>
-                            </div>
-                        </div>
-
-                        
-                        <div class="card-action article-tags">
-                            
-                            <a href="/tags/opencv/"><span class="chip bg-color">opencv</span></a>
-                            
-                        </div>
-                        
-                    </div>
-                </div>
-            </article>
-        </div>
-        
-        <div class="cd-timeline-block">
-
-            
-            
-
-            
-            
-
-            
-            <div class="cd-timeline-img day" data-aos="zoom-in-up">
-                <span>27</span>
-            </div>
-            <article class="cd-timeline-content" data-aos="fade-up">
-                <div class="article col s12 m6">
-                    <div class="card">
                         <a href="/2024/09/27/ubuntu%E5%A4%9A%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86/">
                             <div class="card-image">
                                 
@@ -761,7 +775,7 @@ sudo apt-get install terminator
 以gcc为例，ls &#x2F;usr&#x2F;bin&#x2F;gcc*查看当前有哪些版本，若无需要版本apt-get install即可
 
 对于不同版本设置不同等级，等级越高，优先级越高
-1
+s
                                 
                             </div>
                             <div class="publish-info">
@@ -824,7 +838,14 @@ sudo apt-get install terminator
                         <div class="card-content article-content">
                             <div class="summary block-with-text">
                                 
-                                    博客发布脚本123456789101112131415161718192021222324252627282930#!/bin/bashroot=$(pwd)blog_prj=stackedit-app-datawebs_prj=ae2le
+                                    博客发布脚本#!/bin/bash
+root=$(pwd)
+
+blog_prj=stackedit-app-data
+webs_prj=ae2leowen.github.io
+tplt_prj=hexo
+tplt_theme=matery
+
                                 
                             </div>
                             <div class="publish-info">
